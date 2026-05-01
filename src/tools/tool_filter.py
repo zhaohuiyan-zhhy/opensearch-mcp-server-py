@@ -216,6 +216,27 @@ def process_tool_filter(
         # Add search_relevance as a built-in category (not enabled by default)
         category_to_tools['search_relevance'] = search_relevance_display_names
 
+        # Initialize agentic_memory tool names
+        agentic_memory_tools = [
+            'CreateAgenticMemorySessionTool',
+            'AddAgenticMemoriesTool',
+            'GetAgenticMemoryTool',
+            'UpdateAgenticMemoryTool',
+            'DeleteAgenticMemoryByIDTool',
+            'DeleteAgenticMemoryByQueryTool',
+            'SearchAgenticMemoryTool',
+        ]
+
+        # Build agentic_memory tools list using display names
+        agentic_memory_display_names = []
+        for tool_name in agentic_memory_tools:
+            if tool_name in tool_registry:
+                tool_display_name = tool_registry[tool_name].get('display_name', tool_name)
+                agentic_memory_display_names.append(tool_display_name)
+
+        # Add agentic_memory as a built-in category (not enabled by default)
+        category_to_tools['agentic_memory'] = agentic_memory_display_names
+
         # Add skills as a built-in category (not enabled by default)
         skills_display_names = [
             info.get('display_name', name) for name, info in SKILLS_TOOLS_REGISTRY.items()

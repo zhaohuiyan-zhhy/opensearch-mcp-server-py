@@ -2,13 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pydantic import BaseModel, Field
-from typing import Any, Literal, Optional, Type, TypeVar, Dict
+from typing import Any, Dict, Literal, Optional, Type, TypeVar
 from mcp_server_opensearch.global_state import get_mode
+
 
 T = TypeVar('T', bound=BaseModel)
 
 
-def validate_args_for_mode(args_dict: Dict[str, Any], args_model_class: Type[T]) -> T:
+def validate_args_for_mode(
+    args_dict: Dict[str, Any],
+    args_model_class: Type[T],
+) -> T:
     """
     Validation middleware that handles mode-specific validation.
 
@@ -22,9 +26,10 @@ def validate_args_for_mode(args_dict: Dict[str, Any], args_model_class: Type[T])
     # Get the current mode from global state
     mode = get_mode()
 
+    args_dict = args_dict.copy()  # Don't modify the original
+
     if mode == 'single':
         # In single mode, add default values for base fields
-        args_dict = args_dict.copy()  # Don't modify the original
         args_dict.setdefault('opensearch_cluster_name', '')
 
     try:

@@ -58,8 +58,8 @@ from opensearch.helper import (
     get_judgment_list,
     get_long_running_tasks,
     get_nodes,
-    get_nodes_info,
     get_nodes_hot_threads,
+    get_nodes_info,
     get_opensearch_version,
     get_query_insights,
     get_search_configuration,
@@ -79,6 +79,7 @@ from opensearch.helper import (
     search_judgments,
     search_experiments,
 )
+from .agentic_memory.actions import AGENTIC_MEMORY_TOOLS_REGISTRY
 from .skills_tools import SKILLS_TOOLS_REGISTRY
 from mcp_server_opensearch.clusters_information import cluster_registry
 
@@ -940,13 +941,13 @@ async def search_experiments_tool(args: SearchExperimentsArgs) -> list[dict]:
     except Exception as e:
         return log_tool_error('SearchExperimentsTool', e, 'searching experiments')
 
-
 from .generic_api_tool import GenericOpenSearchApiArgs, generic_opensearch_api_tool
 
 
 # Registry of available OpenSearch tools with their metadata
 TOOL_REGISTRY = {
     **SKILLS_TOOLS_REGISTRY,
+    **AGENTIC_MEMORY_TOOLS_REGISTRY,
     'ListIndexTool': {
         'display_name': 'ListIndexTool',
         'description': 'Lists indices in the OpenSearch cluster. If an index name or pattern is specified, return only information about the provided index or index pattern. The include_detail flag controls output: if False, returns only index name(s); if True (default), returns full metadata.',
